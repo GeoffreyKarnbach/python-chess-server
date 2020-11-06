@@ -1,7 +1,7 @@
 //The socket.io part:
 
 //Import socket.io and create a server at the port specified in the .env file
-const io = require('socket.io')(process.env.WEBSOCKET);
+const io = require('socket.io')(8080);
 
 //Import the mongoose Chess model
 var Chess = require('./models/chess');
