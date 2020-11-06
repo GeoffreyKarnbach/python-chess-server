@@ -3,6 +3,12 @@
 //Import socket.io and create a server at the port specified in the .env file
 const io = require('socket.io')(8080);
 
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/chess', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
+const db = mongoose.connection;
+db.on('error', error => console.error(error));
+db.once('open', () => console.log('Connected to Mongoose'));
+
 //Import the mongoose Chess model
 var Chess = require('./models/chess');
 
