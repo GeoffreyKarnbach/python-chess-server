@@ -27,6 +27,8 @@ io.on('connection', function (socket) {
     })
     //What happens when a players joins
     socket.on('joined', async function (roomId) {
+    	roomId = roomId.roomId;
+	console.log('joined' + roomId);
         try {
             var game = await Chess.findById(roomId);
             if(game == null | game == '') {
@@ -48,13 +50,14 @@ io.on('connection', function (socket) {
                 else color = 'white';
                 io.to(socket.id).emit('color', {color: color});
             }
-            io.to(socket.id).emit('player', { players: game.players, color: color, roomId, board: game.fen});
+            io.to(socket.id).emit('player', {players: game.players, roomId, board: game.fen});
         } catch (err) {
             sendError(socket, err);
         }    
     });
     //What happens when a player moves a piece
     socket.on('move', async function (msg) {
+	console.log('move' + msg.board);
         try {
             var game = await Chess.findById(msg.room);
             game.previousfen = game.fen;
@@ -68,6 +71,7 @@ io.on('connection', function (socket) {
     });
     //Sending the message that the game begins
     socket.on('play', function (msg) {
+	console.log('play' + msg);
         try {
             socket.broadcast.emit('play', msg);
         } catch (err) {
